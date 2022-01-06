@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <title>Spørreundersøkelse</title>
+    <link rel="stylesheet" href="spørreundersøkelse.css">
+</head>
+<body>
+<div id="hoved">
+    <h1> Spørreundersøkelse </h1>
+
+    <div id="quiz">
+
+    </div>
+    <div id="resultat"></div>
+
+
+    <p>Himmelen er grønn.</p>
+    <div class="container">
+        <div class="skills" id="html">0%</div>
+    </div>
+
+    <p>Jorden er flat.</p>
+    <div class="container">
+        <div class="skills" id="css">0%</div>
+    </div>
+
+    <p>Venus er firkantet.</p>
+    <div class="container">
+        <div class="skills" id="js">0%</div>
+    </div>
+
+    <p>Saturn er rund.</p>
+    <div class="container">
+        <div class="skills" id="php">0%</div>
+    </div>
+</div>
+</body>
+<script>
+    // Henter elementer
+    let quizEl = document.querySelector("#quiz");
+    let resultatEl = document.querySelector("#resultat");
+    var antallEnig=[]
+    antallEnig[0]=0
+    antallEnig[1]=0
+    antallEnig[2]=0
+    antallEnig[3]=0
+    antallEnig[4]=0
+    antallEnig[5]=0
+    antallEnig[6]=0
+    antallEnig[7]=0
+    // Array med spørsmål
+    var quiz = [
+        { sporsmaal: "Himmelen er grønn.",
+            alternativer: ["Uenig", "Enig"],
+            Enig: "Enig",
+            Uenig: "Uenig"},
+
+        { sporsmaal: "Jorden er flat.",
+            alternativer: ["Uenig", "Enig"],
+            Enig: "Enig",
+            Uenig: "Uenig"},
+
+        { sporsmaal: "Venus er firkantet.",
+            alternativer: ["Uenig", "Enig"],
+            Enig: "Enig",
+            Uenig: "Uenig"},
+
+        { sporsmaal: "Saturn er rund.",
+            alternativer: ["Uenig", "Enig"],
+            Enig: "Enig",
+            Uenig: "Uenig"},
+
+    ];
+
+    // Skriver spørsmålene til nettsiden
+    for (let i = 0; i < quiz.length; i++){
+        // Lager et <div>-element til hvert spørsmål
+        let sporsmaalEl = document.createElement("div");
+        // Gir <div>-elementet klassen checkboxradio
+        sporsmaalEl.className = "checkboxradio";
+        // Lager et <h3>-elementet til spørsmålet
+        let h3El = document.createElement("h3");
+        // Legger til spørsmålet i <h3>-elementet
+        h3El.innerHTML = quiz[i].sporsmaal;
+        // Legger til <h3>-elementet i <div>-elementet
+        sporsmaalEl.appendChild(h3El);
+
+        // Lager elementer for hvert av alternativene
+        for (let j = 0; j < quiz[i].alternativer.length; j++) {
+            // Lager en <label>
+            let labelEl = document.createElement("label");
+            // Lager en radioknapp
+            let radioEl = document.createElement("input");
+            // Angir typen radio
+            radioEl.type = "radio";
+            // Bruker i som navn for å gi alternativene til samme spørsmål likt name
+            radioEl.name = i;
+
+            // Sjekker om dette alternativet er det riktige.
+            // Hvis det er riktig, bruker vi "riktig" som value, ellers "galt".
+            if (quiz[i].Enig === quiz[i].alternativer[j]) {
+                radioEl.value = "Enig";
+            } else {
+                radioEl.value = "Uenig";
+            }
+
+            // Legger til knappen i <label>-elementet
+            labelEl.appendChild(radioEl);
+
+            // Legger til svaralternativ
+            labelEl.innerHTML += quiz[i].alternativer[j];
+
+            // Legger til <label>-elementet i <div>-elementet
+            sporsmaalEl.appendChild(labelEl);
+        }
+
+        // Legger til <div>-elementet i quiz-elementet
+        quizEl.appendChild(sporsmaalEl);
+    }
+
+    // Legger til en knapp til slutt
+    let knappEl = document.createElement("button");
+    knappEl.innerHTML = "Svar";
+
+    let knapp2El = document.createElement("button");
+    knapp2El.innerHTML = "Vis resultat";
+
+    // Legger til lytter på knappen
+    knappEl.addEventListener("click", finnPoeng);
+    // Legger til lytter på knappen
+    knapp2El.addEventListener("click", resultat);
+
+
+    // Legger til knappen på nettsiden
+    quizEl.appendChild(knappEl);
+    // Legger til knappen på nettsiden
+    quizEl.appendChild(knapp2El);
+
+
+    function finnPoeng (){
+        // Henter alle radioknapper på siden
+        alleRadioEl = document.querySelectorAll("input[type='radio']");
+
+
+
+    }
+
+    knappEl.addEventListener("click", skrivAntall);
+
+    let antallTrykk = 0;
+    function skrivAntall() {
+        antallTrykk++;
+        resultatEl.innerHTML = "Svaret er registrert. Det er " + antallTrykk + " som har svart på undersøkelsen.";
+        // Går gjennom alle radioknappene
+        alleRadioEl = document.querySelectorAll("input[type='radio']");
+        for (var i = 0; i < alleRadioEl.length; i++) {
+            // Hvis en radioknapp er haket av
+            if (alleRadioEl[i].checked) {
+                // Undersøk om alternativet er enig
+                if (alleRadioEl[i].value === "Enig") {
+                    antallEnig[i] += 1;
+                }
+            }
+        }
+    }
+    function resultat(){
+        document.getElementById("html").style.width=(parseInt(antallEnig[1]/antallTrykk*100)).toString()+"%"
+        document.getElementById("html").innerHTML=(parseInt(antallEnig[1]/antallTrykk*100)).toString()+"%"
+
+        document.getElementById("css").style.width=(parseInt(antallEnig[3]/antallTrykk*100)).toString()+"%"
+        document.getElementById("css").innerHTML=(parseInt(antallEnig[3]/antallTrykk*100)).toString()+"%"
+
+        document.getElementById("js").style.width=(parseInt(antallEnig[5]/antallTrykk*100)).toString()+"%"
+        document.getElementById("js").innerHTML=(parseInt(antallEnig[5]/antallTrykk*100)).toString()+"%"
+
+        document.getElementById("php").style.width=(parseInt(antallEnig[7]/antallTrykk*100)).toString()+"%"
+        document.getElementById("php").innerHTML=(parseInt(antallEnig[7]/antallTrykk*100)).toString()+"%"
+    }
+
+
+
+
+</script>
+</html>
